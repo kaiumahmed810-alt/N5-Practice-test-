@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>N5 Quest — Japanese Practice Exam</title>
+<style>
+:root{color-scheme:dark;--bg:#090e1b;--panel:#121a2d;--panel2:#18233b;--line:#293650;--text:#f2f5ff;--muted:#aab6d0;--pink:#fb7185;--cyan:#67e8f9;--green:#86efac;--red:#fda4af}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#172345 0,#090e1b 55%);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{position:sticky;top:0;z-index:5;background:#0b1020ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.wrap{max-width:900px;margin:auto;padding:16px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:1.1rem;font-weight:900;letter-spacing:.04em}.brand b{color:var(--cyan)}.sub{font-size:.8rem;color:var(--muted)}.progress{height:5px;background:#27324a;border-radius:9px;overflow:hidden;margin-top:12px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink));transition:width .2s}
+main{max-width:900px;margin:24px auto;padding:0 16px 50px}.hero{padding:24px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,#182644,#11182a);margin-bottom:18px}.eyebrow{color:var(--cyan);font-size:.75rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.hero h1{font-size:clamp(1.8rem,6vw,2.7rem);line-height:1.1;margin:8px 0}.hero p{color:var(--muted);margin:8px 0 0}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.pill{border:1px solid var(--line);background:#0c1426;border-radius:999px;padding:7px 11px;color:#d7e1f7;font-size:.82rem}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:800;font-size:.95rem;cursor:pointer;background:var(--cyan);color:#07111e}.btn.secondary{background:#202c45;color:var(--text);border:1px solid var(--line)}.btn.danger{background:#4a1e31;color:#ffd7df;border:1px solid #7b3047}.btn:disabled{opacity:.5;cursor:not-allowed}
+.question{background:#111a2d;border:1px solid var(--line);border-radius:18px;padding:20px;margin:14px 0;scroll-margin-top:100px}.qhead{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--muted);font-size:.8rem}.qnum{color:var(--cyan);font-weight:900}.jp{font-size:1.3rem;font-weight:800;letter-spacing:.02em;margin:15px 0 5px;overflow-wrap:anywhere}.meaning{color:var(--muted);font-size:.92rem;margin-bottom:14px}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.option{border:1px solid #34415d;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;cursor:pointer;background:#151f34;min-width:0}.option:has(input:checked){border-color:var(--cyan);background:#123043}.option input{accent-color:#67e8f9;width:17px;height:17px;flex-shrink:0}.option span{overflow-wrap:anywhere}.feedback{margin-top:13px;padding:12px;border-radius:12px;font-size:.9rem}.correct{border:1px solid #28734e;background:#102c25;color:#c7f9db}.incorrect{border:1px solid #873b50;background:#351b2a;color:#ffd3dc}.muted{color:var(--muted)}.hidden{display:none!important}.results{padding:22px;border-radius:18px;border:1px solid var(--line);background:#111a2d;margin:20px 0}.score{font-size:2.5rem;font-weight:950;color:var(--cyan)}footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px}.select{background:#101a2c;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px}
+@media(max-width:520px){.wrap{padding:12px}.hero{padding:18px}.question{padding:15px}.options{grid-template-columns:1fr}.top .sub{max-width:125px;text-align:right}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+ <div class="top"><div><div class="brand"><b>N5</b> QUEST <span class="sub">/ JAPANESE PRACTICE</span></div><div class="sub">Small steps. Strong Japanese.</div></div><div style="text-align:right"><div class="sub">ANSWERED</div><strong id="count">0 / 20</strong></div></div>
+ <div class="progress"><span id="bar"></span></div>
+</div></header>
+<main>
+<section class="hero">
+ <div class="eyebrow">JLPT N5 • PRACTICE MODE</div><h1>Ready to test your Japanese?</h1>
+ <p>20 mixed beginner questions. Choose an answer for each one, submit, then review the correct answer and explanation.</p>
+ <div class="stats"><span class="pill">✦ Random order</span><span class="pill">✓ Instant score</span><span class="pill">文 Grammar + vocabulary</span></div>
+</section>
+<div class="toolbar">
+ <label class="pill">Questions
+ <select class="select" id="amount" aria-label="Number of questions"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option></select></label>
+ <button class="btn secondary" id="shuffle">↻ New random set</button>
+</div>
+<div id="questions"></div>
+<div class="toolbar"><button class="btn" id="submit">Submit answers & see score</button><button class="btn secondary" id="restart">Start again</button></div>
+<section class="results hidden" id="results" aria-live="polite"><div class="eyebrow">YOUR RESULT</div><div class="score" id="score">0 / 20</div><p id="summary"></p><p class="muted" id="unanswered"></p><button class="btn secondary" id="review">Review answers</button></section>
+</main>
+<footer>N5 QUEST • Personal study project • Keep practising every day.</footer>
+<script>
+const bank = [
+{q:"わたし ___ がくせいです。",m:"I am a student.",o:["は","で","に","を"],a:"は",e:"は marks the topic: わたしは = as for me."},
+{q:"まいにち 7じ ___ おきます。",m:"I wake up at 7 every day.",o:["で","に","へ","を"],a:"に",e:"に marks a specific time, such as 7じに."},
+{q:"としょかん ___ べんきょうします。",m:"I study at the library.",o:["に","を","で","へ"],a:"で",e:"で marks the place where an action happens."},
+{q:"みず ___ のみます。",m:"I drink water.",o:["を","に","で","へ"],a:"を",e:"を marks the direct object of an action: water is what you drink."},
+{q:"にちようびに ともだち ___ あいます。",m:"I meet a friend on Sunday.",o:["を","が","に","で"],a:"に",e:"あいます commonly uses に for the person you meet."},
+{q:"へやに ねこ ___ います。",m:"There is a cat in the room.",o:["を","が","で","へ"],a:"が",e:"が marks the thing/person that exists with います."},
+{q:"がっこう ___ いきます。",m:"I go to school.",o:["を","で","へ","が"],a:"へ",e:"へ marks the direction of movement. に can also mark a destination."},
+{q:"はし ___ ごはんを たべます。",m:"I eat with chopsticks.",o:["に","で","が","へ"],a:"で",e:"で can mark the tool or means used to do something."},
+{q:"これは だれ ___ かばんですか。",m:"Whose bag is this?",o:["の","を","に","で"],a:"の",e:"の links nouns and can show possession: だれのかばん = whose bag."},
+{q:"きのうは あまり さむく ___。",m:"It was not very cold yesterday.",o:["ないです","ありません","なかったです","じゃないです"],a:"なかったです",e:"For an い-adjective in the past negative, さむい → さむくなかったです."},
+{q:"この りんごは ___ です。",m:"This apple is delicious.",o:["おいしい","おいしく","おいしな","おいしくて"],a:"おいしい",e:"Use the plain い-adjective form before です: おいしいです."},
+{q:"きのう えいがを ___。",m:"I watched a movie yesterday.",o:["みます","みました","みません","みませんか"],a:"みました",e:"きのう means yesterday, so use the past polite form みました."},
+{q:"ここで しゃしんを ___ ください。",m:"Please take a photo here.",o:["とって","とり","とる","とった"],a:"とって",e:"A request uses the te-form + ください: とってください."},
+{q:"いま あめが ___ います。",m:"It is raining now.",o:["ふり","ふって","ふる","ふった"],a:"ふって",e:"A continuing action/state uses te-form + います: ふっています."},
+{q:"まいあさ コーヒーを ___。",m:"I drink coffee every morning.",o:["のみます","たべます","ききます","かきます"],a:"のみます",e:"のみます means to drink. コーヒーをのみます = drink coffee."},
+{q:"「おおきい」の はんたいは どれですか。",m:"What is the opposite of 'big'?",o:["ちいさい","あたらしい","たかい","はやい"],a:"ちいさい",e:"おおきい means big; ちいさい means small."},
+{q:"「せんせい」は どんな ひとですか。",m:"Who is a せんせい?",o:["Teacher","Doctor","Student","Company employee"],a:"Teacher",e:"せんせい means teacher; it can also be used for certain professionals."},
+{q:"「あした」は いつですか。",m:"When is あした?",o:["Yesterday","Today","Tomorrow","Last week"],a:"Tomorrow",e:"あした means tomorrow."},
+{q:"つくえの うえ ___ ほんが あります。",m:"There is a book on the desk.",o:["に","で","を","へ"],a:"に",e:"に marks the location where something exists with あります."},
+{q:"A: ありがとう。 B: ___。",m:"A: Thank you. B: You're welcome.",o:["どういたしまして","おやすみなさい","いってきます","いただきます"],a:"どういたしまして",e:"どういたしまして is a common way to say 'you're welcome'."},
+{q:"まいばん 11じに ___。",m:"I go to sleep at 11 every night.",o:["ねます","おきます","はたらきます","あそびます"],a:"ねます",e:"ねます means to sleep/go to bed; おきます means to wake up."},
+{q:"スーパーで たまごを ___。",m:"I buy eggs at the supermarket.",o:["かいます","あいます","かえります","あけます"],a:"かいます",e:"かいます means to buy. スーパーで marks where the buying happens."},
+{q:"この へやは きれい ___。",m:"This room is clean.",o:["です","ます","でしたか","います"],a:"です",e:"きれい is a な-adjective/noun-like adjective, so use きれいです."},
+{q:"どこ ___ きましたか。",m:"Where did you come from?",o:["から","まで","だけ","しか"],a:"から",e:"から marks a starting point: どこから = from where."},
+{q:"にほんごが すこし ___。",m:"I can speak a little Japanese.",o:["できます","あります","います","します"],a:"できます",e:"できます means can do/be able to; にほんごができます means can use/speak Japanese."},
+{q:"きょうは げつようび ___。",m:"Today is Monday.",o:["です","ます","います","あります"],a:"です",e:"Use です to state what day it is."},
+{q:"りんごを ふたつ ___。",m:"I bought two apples.",o:["かいました","いました","きました","しました"],a:"かいました",e:"かいました is the past form of かいます (to buy)."},
+{q:"あの ひとは にほんご ___ せんせいです。",m:"That person is a Japanese-language teacher.",o:["の","に","で","を"],a:"の",e:"の links nouns: にほんごのせんせい = Japanese-language teacher."},
+{q:"A: いっしょに いきませんか。 B: はい、___。",m:"A: Shall we go together? B: Yes, let's.",o:["いきましょう","いきません","いきました","いきませんでした"],a:"いきましょう",e:"いきましょう means 'let's go' and accepts the invitation."},
+{q:"「やすみます」の いみは どれですか。",m:"What does やすみます mean?",o:["To rest / take a day off","To borrow","To teach","To swim"],a:"To rest / take a day off",e:"やすみます means to rest or take time off."}
+];
+let questions=[], answers={}, graded=false;
+const $=id=>document.getElementById(id);
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function start(){const n=Number($("amount").value);questions=shuffle(bank).slice(0,n);answers={};graded=false;$("results").classList.add("hidden");render();}
+function render(){const root=$("questions");root.innerHTML="";questions.forEach((q,i)=>{const card=document.createElement("article");card.className="question";card.id="q"+i;
+ const head=document.createElement("div");head.className="qhead";head.innerHTML=`<span class="qnum">QUESTION ${(i+1).toString().padStart(2,"0")}</span><span>${i+1} of ${questions.length}</span>`;card.append(head);
+ const jp=document.createElement("div");jp.className="jp";jp.textContent=q.q;card.append(jp);
+ const meaning=document.createElement("div");meaning.className="meaning";meaning.textContent=q.m;card.append(meaning);
+ const opts=document.createElement("div");opts.className="options";shuffle(q.o).forEach(opt=>{const label=document.createElement("label");label.className="option";const radio=document.createElement("input");radio.type="radio";radio.name="q"+i;radio.value=opt;radio.checked=answers[i]===opt;radio.disabled=graded;radio.addEventListener("change",()=>{answers[i]=opt;updateCount();});const text=document.createElement("span");text.textContent=opt;label.append(radio,text);opts.append(label);});card.append(opts);
+ const fb=document.createElement("div");fb.className="feedback hidden";fb.id="fb"+i;card.append(fb);root.append(card);});updateCount();$("submit").disabled=graded;}
+function updateCount(){const n=Object.keys(answers).length;$("count").textContent=`${n} / ${questions.length}`;$("bar").style.width=(n/questions.length*100)+"%";}
+function grade(){if(graded){$("results").scrollIntoView({behavior:"smooth"});return;}graded=true;let score=0;questions.forEach((q,i)=>{const fb=$("fb"+i),correct=answers[i]===q.a;if(correct)score++;fb.classList.remove("hidden");fb.classList.add(correct?"correct":"incorrect");fb.innerHTML="";const title=document.createElement("strong");title.textContent=correct?"✓ Correct":"✗ Incorrect";fb.append(title,document.createElement("br"));const answer=document.createElement("span");answer.textContent="Correct answer: "+q.a;fb.append(answer,document.createElement("br"));const explanation=document.createElement("span");explanation.textContent=q.e;fb.append(explanation);document.querySelectorAll(`input[name="q${i}"]`).forEach(x=>x.disabled=true);});const pct=Math.round(score/questions.length*100);$("score").textContent=`${score} / ${questions.length} · ${pct}%`;$("summary").textContent=pct>=80?"Excellent work! Keep going.":pct>=50?"Good effort — review the explanations and try again.":"Keep practising. Review the explanations and take another round.";const missing=questions.length-Object.keys(answers).length;$("unanswered").textContent=missing?`${missing} question(s) were left unanswered.`:"You answered every question."; $("results").classList.remove("hidden");$("submit").disabled=true;$("results").scrollIntoView({behavior:"smooth"});}
+$("submit").addEventListener("click",grade);$("shuffle").addEventListener("click",start);$("restart").addEventListener("click",start);$("amount").addEventListener("change",start);$("review").addEventListener("click",()=>$("q0").scrollIntoView({behavior:"smooth"}));start();
+</script>
+</body></html>
